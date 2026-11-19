@@ -89,13 +89,26 @@
               <button type="button" class="button button--ghost" id="export-results" disabled>
                 Export JSON
               </button>
-              <button type="button" class="button button--primary" id="run-suite">Run selected</button>
+              <button type="button" class="button button--secondary" id="run-all-roles">
+                Run all roles
+              </button>
             </div>
           </header>
+          <div class="role-tabs" role="tablist" aria-label="Role" id="role-tabs"></div>
+          <div class="card__body role-bar">
+            <p class="role-bar__description" id="role-description"></p>
+            <div class="role-bar__row">
+              <label class="field field--inline role-bar__employee">
+                <span>Run as employee ID</span>
+                <input id="role-employee" autocomplete="off" placeholder="Target employee" />
+              </label>
+              <button type="button" class="button button--primary" id="run-role">Run role</button>
+            </div>
+          </div>
           <div class="card__body suite-options">
             <label class="check">
               <input type="checkbox" id="same-conversation" />
-              <span>One conversation (follow-ups share context)</span>
+              <span>One conversation per role (follow-ups share context)</span>
             </label>
             <label class="field field--inline">
               <span>Reply language</span>
@@ -105,22 +118,44 @@
                 <option value="hi-IN">Hindi</option>
               </select>
             </label>
+            <span class="suite-options__select">
+              <button type="button" class="link-button" id="select-all">Select all</button>
+              <button type="button" class="link-button" id="select-none">None</button>
+            </span>
           </div>
           <form class="add-question" id="add-question">
-            <input name="question" placeholder="Add a question…" autocomplete="off" />
-            <input name="expect" placeholder="Expected card type (optional)" autocomplete="off" />
+            <input name="question" placeholder="Add a question…" autocomplete="off" required />
+            <select name="role" aria-label="Role for the question" id="add-role"></select>
+            <input name="intent" list="intent-options" placeholder="Expected intent (optional)" autocomplete="off" />
+            <input name="expect" list="card-options" placeholder="Expected card (optional)" autocomplete="off" />
+            <label class="check">
+              <input type="checkbox" name="deny" />
+              <span>Should be denied</span>
+            </label>
             <button type="submit" class="button button--secondary">Add</button>
           </form>
+          <datalist id="intent-options"></datalist>
+          <datalist id="card-options"></datalist>
           <div class="suite-summary" id="suite-summary" hidden></div>
           <ol class="suite" id="suite"></ol>
         </section>
       </div>
 
       <aside class="column column--preview">
-        <section class="card preview" aria-labelledby="preview-title">
+        <section class="card side">
           <header class="card__header">
-            <h2 id="preview-title">Live widget</h2>
-            <div class="card__actions">
+            <div class="side-tabs" role="tablist" aria-label="Side panel">
+              <button type="button" role="tab" id="tab-chat" aria-controls="chat-panel" aria-selected="true">
+                Chat
+              </button>
+              <button type="button" role="tab" id="tab-widget" aria-controls="widget-panel" aria-selected="false">
+                Live widget
+              </button>
+            </div>
+            <div class="card__actions" id="chat-actions">
+              <button type="button" class="button button--ghost" id="clear-chat">Clear</button>
+            </div>
+            <div class="card__actions" id="widget-actions" hidden>
               <select id="frame-size" aria-label="Preview size">
                 <option value="widget">Widget 420 × 580</option>
                 <option value="phone">Phone 390 × 760</option>
@@ -129,10 +164,21 @@
               <button type="button" class="button button--secondary" id="reload-widget">Reload</button>
             </div>
           </header>
-          <div class="preview__stage" id="preview-stage">
-            <p class="empty">Apply a target to load the widget.</p>
+          <div class="chat" id="chat-panel" role="tabpanel" aria-labelledby="tab-chat">
+            <div class="chat__log" id="chat-log" aria-live="polite">
+              <p class="empty">Run a role or a question and the answers appear here.</p>
+            </div>
+            <form class="chat__composer" id="chat-composer">
+              <input name="message" placeholder="Ask TIA as the selected role…" autocomplete="off" required />
+              <button type="submit" class="button button--primary">Send</button>
+            </form>
           </div>
-          <p class="preview__hint" id="preview-hint"></p>
+          <div id="widget-panel" role="tabpanel" aria-labelledby="tab-widget" hidden>
+            <div class="preview__stage" id="preview-stage">
+              <p class="empty">Apply a target to load the widget.</p>
+            </div>
+            <p class="preview__hint" id="preview-hint"></p>
+          </div>
         </section>
       </aside>
     </main>

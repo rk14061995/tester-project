@@ -1,17 +1,75 @@
 {
-  "questions": [
-    { "question": "How many leave days do I have left?", "expectPresentation": "summary_card" },
-    { "question": "Which holidays are left this year?" },
-    { "question": "Who is my manager?" },
-    { "question": "Show my profile", "expectPresentation": "profile_card" },
-    { "question": "Show my attendance this month", "expectPresentation": "summary_card" },
-    { "question": "Show my leave requests", "expectPresentation": "summary_card" },
-    { "question": "Show my goals", "expectPresentation": "data_table" },
-    { "question": "Show my org chart", "expectPresentation": "org_chart" },
-    { "question": "What is the current headcount?", "expectPresentation": "bar_chart" },
-    { "question": "Who in my team is on leave next week?", "expectPresentation": "data_table" },
-    { "question": "What is my team's average attendance this month?", "expectPresentation": "team_attendance" },
-    { "question": "Apply leave for tomorrow", "expectPresentation": "action" },
-    { "question": "What is the leave policy?" }
+  "_readme": "Default questions per role. Each question can name the intent it should route to (expectIntent), the card it should show (expectPresentation) and expectAuth: \"DENY\" when that role must NOT get the data. Questions added in the page are kept in the browser, not here.",
+  "roles": [
+    {
+      "id": "employee",
+      "label": "Employee",
+      "description": "Self-service: own profile, leave, attendance, goals, policies. Team and company data must be refused.",
+      "questions": [
+        { "question": "Show my profile", "expectIntent": "GET_MY_PROFILE", "expectPresentation": "profile_card" },
+        { "question": "Who is my manager?", "expectIntent": "GET_MANAGER" },
+        { "question": "Who are my teammates?", "expectIntent": "GET_TEAMMATES" },
+        { "question": "Show my documents", "expectIntent": "GET_MY_DOCUMENTS" },
+        { "question": "What are my skills?", "expectIntent": "GET_SKILLS", "expectPresentation": "skill_chips" },
+        { "question": "How many leave days do I have left?", "expectIntent": "GET_LEAVE_BALANCE", "expectPresentation": "summary_card" },
+        { "question": "What is the status of my last leave request?", "expectIntent": "GET_LEAVE_STATUS" },
+        { "question": "Show my leave history", "expectIntent": "GET_LEAVE_HISTORY" },
+        { "question": "Who approves my leave?", "expectIntent": "GET_LEAVE_APPROVER" },
+        { "question": "Which holidays are left this year?", "expectIntent": "GET_HOLIDAYS" },
+        { "question": "Show my attendance this month", "expectIntent": "GET_MY_ATTENDANCE", "expectPresentation": "summary_card" },
+        { "question": "How many days was I late last month?", "expectIntent": "GET_MY_ATTENDANCE" },
+        { "question": "Show my goals", "expectIntent": "GET_GOALS", "expectPresentation": "data_table" },
+        { "question": "What is the leave policy?", "expectIntent": "SEARCH_POLICY" },
+        { "question": "What is the work from home policy?", "expectIntent": "SEARCH_POLICY" },
+        { "question": "Apply leave for tomorrow", "expectIntent": "APPLY_LEAVE", "expectPresentation": "action" },
+        { "question": "Where do I download my payslip?", "expectIntent": "NAVIGATION" },
+        { "question": "What can I access in TIA?", "expectIntent": "CHECK_ACCESS" },
+        { "question": "What is the current headcount?", "expectIntent": "GET_HEADCOUNT", "expectAuth": "DENY" },
+        { "question": "Show the attrition trend for this year", "expectIntent": "GET_ATTRITION_TREND", "expectAuth": "DENY" },
+        { "question": "Show the attendance report for my department", "expectIntent": "GET_ATTENDANCE_REPORT", "expectAuth": "DENY" }
+      ]
+    },
+    {
+      "id": "manager",
+      "label": "Manager",
+      "description": "Own data plus direct and indirect reports: team leave, attendance, approvals, org chart. Company-wide analytics must be refused.",
+      "questions": [
+        { "question": "Who reports to me?", "expectIntent": "GET_DIRECT_REPORTS" },
+        { "question": "Show everyone in my reporting line, including indirect reports", "expectIntent": "GET_INDIRECT_REPORTS" },
+        { "question": "Show my org chart", "expectIntent": "GET_ORG_CHART", "expectPresentation": "org_chart" },
+        { "question": "Who in my team is on leave next week?", "expectIntent": "GET_TEAM_LEAVE", "expectPresentation": "data_table" },
+        { "question": "Who in my team is on leave today?", "expectIntent": "GET_TEAM_LEAVE" },
+        { "question": "Show my team's leave dashboard", "expectIntent": "GET_LEAVE_DASHBOARD", "expectPresentation": "leave_dashboard" },
+        { "question": "What is my team's average attendance this month?", "expectIntent": "GET_ATTENDANCE_REPORT", "expectPresentation": "team_attendance" },
+        { "question": "Who in my team was absent yesterday?", "expectIntent": "GET_ATTENDANCE_REPORT" },
+        { "question": "Show pending leave requests I need to approve", "expectIntent": "APPROVE_LEAVE" },
+        { "question": "Who in my team knows Python?", "expectIntent": "FIND_EMPLOYEES_BY_SKILL" },
+        { "question": "Show my team's goals", "expectIntent": "GET_GOALS" },
+        { "question": "How many leave days do I have left?", "expectIntent": "GET_LEAVE_BALANCE", "expectPresentation": "summary_card" },
+        { "question": "Show my attendance this month", "expectIntent": "GET_MY_ATTENDANCE" },
+        { "question": "What is the company-wide headcount by department?", "expectIntent": "GET_HEADCOUNT", "expectAuth": "DENY" },
+        { "question": "Show the attrition trend for the whole company", "expectIntent": "GET_ATTRITION_TREND", "expectAuth": "DENY" }
+      ]
+    },
+    {
+      "id": "hr",
+      "label": "HR Admin",
+      "description": "Tenant-wide access: headcount, attrition, directory, organisation attendance and leave, policies.",
+      "questions": [
+        { "question": "What is the current headcount?", "expectIntent": "GET_HEADCOUNT", "expectPresentation": "bar_chart" },
+        { "question": "Show headcount by department", "expectIntent": "GET_HEADCOUNT", "expectPresentation": "bar_chart" },
+        { "question": "Show the attrition trend for the last 12 months", "expectIntent": "GET_ATTRITION_TREND", "expectPresentation": "bar_chart" },
+        { "question": "Search the employee directory for engineers", "expectIntent": "GET_EMPLOYEE_DIRECTORY" },
+        { "question": "Who knows Java in the company?", "expectIntent": "FIND_EMPLOYEES_BY_SKILL" },
+        { "question": "Show the attendance report for this month", "expectIntent": "GET_ATTENDANCE_REPORT" },
+        { "question": "Who is on leave today across the company?", "expectIntent": "GET_TEAM_LEAVE" },
+        { "question": "Show the leave dashboard for the organisation", "expectIntent": "GET_LEAVE_DASHBOARD", "expectPresentation": "leave_dashboard" },
+        { "question": "Show the full org chart", "expectIntent": "GET_ORG_CHART", "expectPresentation": "org_chart" },
+        { "question": "What is the maternity leave policy?", "expectIntent": "SEARCH_POLICY" },
+        { "question": "What is the notice period policy?", "expectIntent": "SEARCH_POLICY" },
+        { "question": "List the public holidays this year", "expectIntent": "GET_HOLIDAYS" },
+        { "question": "Where do I configure leave types?", "expectIntent": "NAVIGATION" }
+      ]
+    }
   ]
 }
