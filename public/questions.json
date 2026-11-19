@@ -1,0 +1,17 @@
+{
+  "questions": [
+    { "question": "How many leave days do I have left?", "expectPresentation": "summary_card" },
+    { "question": "Which holidays are left this year?" },
+    { "question": "Who is my manager?" },
+    { "question": "Show my profile", "expectPresentation": "profile_card" },
+    { "question": "Show my attendance this month", "expectPresentation": "summary_card" },
+    { "question": "Show my leave requests", "expectPresentation": "summary_card" },
+    { "question": "Show my goals", "expectPresentation": "data_table" },
+    { "question": "Show my org chart", "expectPresentation": "org_chart" },
+    { "question": "What is the current headcount?", "expectPresentation": "bar_chart" },
+    { "question": "Who in my team is on leave next week?", "expectPresentation": "data_table" },
+    { "question": "What is my team's average attendance this month?", "expectPresentation": "team_attendance" },
+    { "question": "Apply leave for tomorrow", "expectPresentation": "action" },
+    { "question": "What is the leave policy?" }
+  ]
+}

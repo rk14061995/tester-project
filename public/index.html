@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TIA Tester</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar__brand">
+        <span class="topbar__logo" aria-hidden="true">T</span>
+        <div>
+          <h1>TIA Tester</h1>
+          <p>Check a TIA deployment by URL: health, API answers and the live widget.</p>
+        </div>
+      </div>
+      <span class="status-dot" id="target-status" data-state="idle">Not checked</span>
+    </header>
+
+    <main class="layout">
+      <div class="column">
+        <section class="card" aria-labelledby="target-title">
+          <header class="card__header">
+            <h2 id="target-title">Target</h2>
+            <button type="button" class="button button--ghost" id="copy-link">Copy share link</button>
+          </header>
+          <form class="card__body form" id="target-form">
+            <label class="field field--wide">
+              <span>TIA URL</span>
+              <input name="url" type="url" required placeholder="https://tia.example.com" />
+            </label>
+            <label class="field">
+              <span>Employee ID</span>
+              <input name="employee_id" required placeholder="7DCC838C11ED…" autocomplete="off" />
+            </label>
+            <label class="field">
+              <span>Employee name <em>(optional)</em></span>
+              <input name="employee_name" placeholder="Rahul Kumar" autocomplete="off" />
+            </label>
+            <label class="field field--wide">
+              <span>API base <em>(optional, defaults to the TIA URL)</em></span>
+              <input name="api_base" type="url" placeholder="https://api.tia.example.com" />
+            </label>
+            <fieldset class="field field--wide">
+              <legend>Widget embed</legend>
+              <div class="segmented">
+                <label><input type="radio" name="mode" value="loader" /> Loader script</label>
+                <label><input type="radio" name="mode" value="iframe" /> Direct iframe</label>
+              </div>
+            </fieldset>
+            <label class="check">
+              <input type="checkbox" name="mock" />
+              <span>Mock leave actions <em>(direct iframe only)</em></span>
+            </label>
+            <label class="check">
+              <input type="checkbox" name="insecure" />
+              <span>Accept self-signed certificates</span>
+            </label>
+            <div class="form__actions">
+              <button type="submit" class="button button--primary">Apply and run checks</button>
+              <a class="button button--ghost" id="open-target" target="_blank" rel="noopener">
+                Open TIA ↗
+              </a>
+            </div>
+          </form>
+        </section>
+
+        <section class="card" aria-labelledby="checks-title">
+          <header class="card__header">
+            <h2 id="checks-title">Deployment checks</h2>
+            <button type="button" class="button button--secondary" id="run-checks">Run again</button>
+          </header>
+          <ul class="checks" id="checks">
+            <li class="empty">Apply a target to run the checks.</li>
+          </ul>
+        </section>
+
+        <section class="card" aria-labelledby="suite-title">
+          <header class="card__header">
+            <h2 id="suite-title">Question suite</h2>
+            <div class="card__actions">
+              <button type="button" class="button button--ghost" id="export-results" disabled>
+                Export JSON
+              </button>
+              <button type="button" class="button button--primary" id="run-suite">Run selected</button>
+            </div>
+          </header>
+          <div class="card__body suite-options">
+            <label class="check">
+              <input type="checkbox" id="same-conversation" />
+              <span>One conversation (follow-ups share context)</span>
+            </label>
+            <label class="field field--inline">
+              <span>Reply language</span>
+              <select id="language">
+                <option value="en-US">US English</option>
+                <option value="en-GB">UK English</option>
+                <option value="hi-IN">Hindi</option>
+              </select>
+            </label>
+          </div>
+          <form class="add-question" id="add-question">
+            <input name="question" placeholder="Add a question…" autocomplete="off" />
+            <input name="expect" placeholder="Expected card type (optional)" autocomplete="off" />
+            <button type="submit" class="button button--secondary">Add</button>
+          </form>
+          <div class="suite-summary" id="suite-summary" hidden></div>
+          <ol class="suite" id="suite"></ol>
+        </section>
+      </div>
+
+      <aside class="column column--preview">
+        <section class="card preview" aria-labelledby="preview-title">
+          <header class="card__header">
+            <h2 id="preview-title">Live widget</h2>
+            <div class="card__actions">
+              <select id="frame-size" aria-label="Preview size">
+                <option value="widget">Widget 420 × 580</option>
+                <option value="phone">Phone 390 × 760</option>
+                <option value="tall">Tall 420 × 820</option>
+              </select>
+              <button type="button" class="button button--secondary" id="reload-widget">Reload</button>
+            </div>
+          </header>
+          <div class="preview__stage" id="preview-stage">
+            <p class="empty">Apply a target to load the widget.</p>
+          </div>
+          <p class="preview__hint" id="preview-hint"></p>
+        </section>
+      </aside>
+    </main>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

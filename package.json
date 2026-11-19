@@ -1,0 +1,13 @@
+{
+  "name": "tia-tester",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Check a TIA deployment by URL: health, API answers and the live widget.",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node server.mjs"
+  }
+}
